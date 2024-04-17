@@ -21,20 +21,39 @@ Constraints:
 s[i] is a printable ascii character.
 """
 
-class Solution:
-    def reverseString(self, s: list[str]) -> None:
+# class Solution:
+#     def reverseString(self, s: list[str]) -> None:
+#         """
+#         Do not return anything, modify s in-place instead.
+#         """
+#         def helper(l, r):
+#             # base condition
+#             if l >= r: return
+#             # recursion relation
+#             if l < r:
+#                 s[l], s[r] = s[r], s[l]
+#                 print("before recursion s: ", s)
+#                 helper(l+1, r-1)
+#                 print("after recursion s: ", s)
+#         helper(0,len(s)-1)
+    
+# Solution().reverseString(["h","e","l","l","o"])
+
+# Time complexity : O(N)\O(N) time to perform N/2 swaps.
+
+# Space complexity : O(N)\O(N) to keep the recursion stack.
+
+class Solution_2:
+    def reverseString2(self, s: list[str]) -> None:
         """
         Do not return anything, modify s in-place instead.
         """
-        def helper(l, r):
-            # base condition
-            if l >= r: return
-            # recursion relation
-            if l < r:
-                s[l], s[r] = s[r], s[l]
-                print("before recursion s: ", s)
-                helper(l+1, r-1)
-                print("after recursion s: ", s)
-        helper(0,len(s)-1)
+        l, r = 0, len(s)-1
+        while l < r:
+            s[l], s[r] = s[r], s[l]
+            l += 1
+            r -= 1
+        print(s)
+        return s
     
-Solution().reverseString(["h","e","l","l","o"])
+Solution_2().reverseString2(["h","e","l","l","o"])
