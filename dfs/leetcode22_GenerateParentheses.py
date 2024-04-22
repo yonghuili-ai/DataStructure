@@ -16,6 +16,11 @@ Constraints:
 
 1 <= n <= 8"""
 
+        # this question can start with which are the validate cases:
+        # 1. all the ( count smaller or equal to n
+        # 2. ) count is smaller or equal to ( count
+        # result is string of list, then we can start to construct all possible strings in the recursion function, append to res and return res in the main function
+
 class Solution:
     def generateParenthesis(self, n: int):
         res = []
