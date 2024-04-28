@@ -19,7 +19,7 @@ Output: 5.00000
 Constraints:
 
 n == nums.length
-1 <= k <= n <= 105
+1 <= k <= n <= 10**5
 -104 <= nums[i] <= 104
 
 """
@@ -39,6 +39,6 @@ class Solution:
             k_sum += nums[j]
         res = max(res, k_sum)
         for i in range(1, n-k+1):
-            k_sum = k_sum - nums[i-1] + nums[i+k-1]
+            k_sum = k_sum - nums[i-1] + nums[i+k-1] # use i is 1 as one example to figure out the i-1 and i+k-1
             res = max(res, k_sum)
         return  round(res/k, 5)
