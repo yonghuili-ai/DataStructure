@@ -1,4 +1,4 @@
---1454 active user
+--leetcode 1454 active user
 /*
 Table: Accounts
 
@@ -89,3 +89,64 @@ join consecutive_5 as c
 on a.id = c.id
 where datediff(c.next_4, login_date) = 4  -- use lead to find the minimum for five consecutive dates
 order by a.id
+
+
+
+--leetcode 180 Consecutive numbers
+/*
+Table: Logs
+
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| id          | int     |
+| num         | varchar |
++-------------+---------+
+In SQL, id is the primary key for this table.
+id is an autoincrement column.
+ 
+
+Find all numbers that appear at least three times consecutively.
+
+Return the result table in any order.
+
+The result format is in the following example.
+
+ 
+
+Example 1:
+
+Input: 
+Logs table:
++----+-----+
+| id | num |
++----+-----+
+| 1  | 1   |
+| 2  | 1   |
+| 3  | 1   |
+| 4  | 2   |
+| 5  | 1   |
+| 6  | 2   |
+| 7  | 2   |
++----+-----+
+Output: 
++-----------------+
+| ConsecutiveNums |
++-----------------+
+| 1               |
++-----------------+
+Explanation: 1 is the only number that appears consecutively for at least three times.
+*/
+
+
+# Write your MySQL query statement below
+with tmp as 
+(select id, num, 
+lead(num,1) over(order by id) as num_1, 
+lead(num,2) over(order by id) as num_2,
+lead(id, 1) over(order by id) as id_1,
+lead(id,2) over(order by id) as id_2
+from logs)
+select distinct num as ConsecutiveNums
+from tmp
+where num = num_1 and num=num_2 and id+1 = id_1 and id+2 = id_2
