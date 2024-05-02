@@ -34,12 +34,7 @@ class WCMapper(Mapper):
   def _map(self, data_part):
     # TODO: mapper code here
     d = defaultdict(int)
-    # list_data = data.split(',')
     word_data = data_part.split(" ")
-    # word_data = []
-    # for sen in list_data:
-    #     word_data.extend(sen.split(' '))
-    #     print(word_data)
     for word in word_data:
         d[word] += 1
     # print(d)
@@ -47,6 +42,7 @@ class WCMapper(Mapper):
  
  
 class WCReducer(Reducer):
+    # kvs should be {Handshake:[1,1], and:[1,2,1]}
   def _reduce(self, kvs):
     # TODO: reducer code here
     h = defaultdict(int)
@@ -55,8 +51,11 @@ class WCReducer(Reducer):
         for cnt in v:
             total_cnt += cnt
         h[k] = total_cnt
-    return h
+    # convert hashmap to tuples in list
+    res = []
+    for k,v in h.items():
+        res.append((k,v))
+    return res
 
- 
 for x in MapReduce(WCMapper, WCReducer).runMR(data):
   print("'{}': {}".format(x[0], x[1]))
