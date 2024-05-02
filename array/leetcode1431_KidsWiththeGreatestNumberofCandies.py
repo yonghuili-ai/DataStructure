@@ -36,3 +36,16 @@ n == candies.length
 1 <= candies[i] <= 100
 1 <= extraCandies <= 50
 """
+
+
+class Solution:
+    def kidsWithCandies(self, candies: list[int], extraCandies: int) -> list[bool]:
+        res = []
+        m = max(candies)
+        for i, v in enumerate(candies):
+            if v + extraCandies >= m:
+                res.append(True)
+            else: 
+                res.append(False) 
+        return res
+    

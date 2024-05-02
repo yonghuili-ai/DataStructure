@@ -78,3 +78,15 @@ from sales
 join product
 on product.product_id = sales.product_id
 where product_name = 'iPhone')
+
+
+-- leetcode 1164. Product Price at a Given Date 
+-- combine with union and not in
+with tmp as 
+(select product_id, new_price as price, row_number() over(partition by product_id order by change_date desc) as r from products
+where change_date <= date('2019-08-16')
+)
+select product_id, price from tmp
+where r = 1
+union 
+select distinct product_id, 10 as price from products where product_id not in (select product_id from tmp)

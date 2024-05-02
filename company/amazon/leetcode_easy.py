@@ -1,4 +1,4 @@
-# 2357. Make Array Zero by Subtracting Equal Amounts
+# leetcode 2357. Make Array Zero by Subtracting Equal Amounts
 """
 You are given a non-negative integer array nums. In one operation, you must:
 
@@ -57,7 +57,7 @@ class Solution:
 
 
 
-# 1710. Maximum Units on a Truck
+# leetcode 1710. Maximum Units on a Truck
     """
     You are assigned to put some amount of boxes onto one truck. You are given a 2D array boxTypes, where boxTypes[i] = [numberOfBoxesi, numberOfUnitsPerBoxi]:
 
@@ -116,7 +116,7 @@ class Solution:
                 truckSize = 0
         return res
      
-# 14 Longest Common Prefix 
+# leetcode 14 Longest Common Prefix 
     
 """
 Write a function to find the longest common prefix string amongst an array of strings.
@@ -161,7 +161,7 @@ class Solution:
     
 
 
-# needs review! 121. Best Time to Buy and Sell Stock
+# needs review! leetcode 121. Best Time to Buy and Sell Stock
 """
 You are given an array prices where prices[i] is the price of a given stock on the ith day.
 

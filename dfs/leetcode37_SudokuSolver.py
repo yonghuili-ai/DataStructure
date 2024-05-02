@@ -15,7 +15,7 @@ Output: [["5","3","4","6","7","8","9","1","2"],["6","7","2","1","9","5","3","4",
 """
 
 
-from collections import defaultdict
+
 class Solution:
     def solveSudoku(self, board):
         """
