@@ -62,14 +62,14 @@ def check_ele_in_arr(prefix, ele):
     elif get_type(ele) == "Object":
         print(f'{prefix} Object')
         for level_down_k, level_down_v in ele.items():
-            check_in_object(prefix+'---', level_down_k,level_down_v) 
+            check_ele_in_object(prefix+'---', level_down_k,level_down_v) 
     # if element is other three types, no need to check deeper, print out directly. 
     elif get_type(ele) in ("Boolean","Number","String"):
         print(f'{prefix} {get_type(ele)}')
 
         
 # check the value type in "Object" type
-def check_in_object(prefix, k,v):
+def check_ele_in_object(prefix, k,v):
     # if element is other three types, no need to check deeper, print out directly. 
     if get_type(v) in ("Boolean","Number","String"):
         print(f"{prefix}{k}: {get_type(v)}")
@@ -78,23 +78,22 @@ def check_in_object(prefix, k,v):
         print(f"{prefix}{k}: Object")
         for level_down_k, level_down_v in v.items():
             # one level down, add --- for indentation
-            check_in_object(prefix+'---',level_down_k,level_down_v) 
+            check_ele_in_object(prefix+'---',level_down_k,level_down_v) 
     elif get_type(v) == "Array":
         print(f"{prefix}{k}: Array")
         # one level down, add --- for indentation
         check_ele_in_arr(prefix+'---', v[0])
 
 
-def initial_check(input):
+def output_json_datatype(input):
+    prefix = "---"
     if get_type(input) == "Array":
         print("Array")
-        check_ele_in_arr('---',input[0])
-        return "Array"
+        check_ele_in_arr(prefix,input[0])
     elif get_type(input) == "Object":
         print("Object")
         for k, v in input.items():
-            check_in_object('---',k,v)
-        return "Object"
+            check_ele_in_object(prefix,k,v)
 
 
 
@@ -114,13 +113,13 @@ input_1 = {
     },
     "is_full_time":True
 }
-initial_check(input_1)
+output_json_datatype(input_1)
 print('\n')
 
 
 input_2 = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 
-initial_check(input_2)
+output_json_datatype(input_2)
 print('\n')
 
 
@@ -145,5 +144,5 @@ input_3 = {
     "is_full_time":True
 }
 
-initial_check(input_3)
+output_json_datatype(input_3)
 print('\n')
