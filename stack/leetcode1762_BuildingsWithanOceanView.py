@@ -54,5 +54,69 @@ class TestAddFunction(unittest.TestCase):
 if __name__ == '__main__':
     unittest.main()
 
+# follow up question 1, can you complete with O(1) space?
+"""
+Algorithm
 
+1. Initialize maxHeight to -1. It will store the maximum height of the buildings to the right of the current building.
+2. Iterate over the buildings array from right to left.
+If the current building is taller than maxHeight, then append its index to the answer array and update maxHeight with the current building's height.
+3. At the end, the answer array has the indices of the buildings that can see the ocean in descending order.
+4. Reverse the answer array (to make it in ascending order) and return it.
+"""
+
+class Solution:
+    def findBuildings(self, heights: list[int]) -> list[int]:
+        n = len(heights)
+        answer = []
+        max_height = -1
+        
+        for current in reversed(range(n)):
+            # If there is no building higher (or equal) than the current one to its right,
+            # push it in the answer array.
+            if max_height < heights[current]:
+                answer.append(current)
+            
+                # Update max building till now.
+                max_height = heights[current]
+        
+        answer.reverse()
+        return answer
+
+# follow up question 2:  if we have an ocean view from both sides , ie : left and right . how do we do it in one pass?
+
+def findBuildings(heights):
+    n = len(heights)
+    left, right = 0, n - 1
+    left_max, right_max = heights[0], heights[n - 1]
+    left_res, right_res = [0], [n - 1]
+    """
+    each step:
+    1. compare left_max and right_max, move the pointer with smaller height , let's say we move right pointer: right -= 1
+    2. compare heights[right] with right_max, if it doesnt have a view from right, it certainly won't have a view from left as left_max > right_max
+    3. do the same thing until left == right
+    """
+    def findBuildings(heights):
+        n = len(heights)
+        left, right = 0, n - 1
+        left_max, right_max = heights[0], heights[n - 1]
+        left_res, right_res = [0], [n - 1]
+        """
+        each step:
+        1. compare left_max and right_max, move the pointer with smaller height , let's say we move right pointer: right -= 1
+        2. compare heights[right] with right_max, if it doesnt have a view from right, it certainly won't have a view from left as left_max > right_max
+        3. do the same thing until left == right
+        """
+        while left < right:
+            if left_max < right_max:
+                left += 1
+                if heights[left] > left_max and left< right:
+                    left_res.append(left)
+                    left_max = heights[left]
+            else:
+                right -= 1
+                if heights[right -1] > right_max and left< right:
+                    right_res.append(right)
+                    right_max = heights[right]
+        return left_res + right_res[::-1]    
 
