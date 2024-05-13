@@ -23,7 +23,9 @@ Input: heights = [1,3,2,4]
 Output: [3]
 Explanation: Only building 3 has an ocean view.
 """
-
+# O(n) time,  given array once.
+# Each building's index can be pushed to answer and popped from answer at most once, and both of the operations take O(1)O(1)O(1) time.
+# Space complexity: O(N)
 import unittest
 def findBuildings(heights: list[int]) -> list[int]:
     # only the tallest and its right can see, use stack to get the tallest and descending ones
