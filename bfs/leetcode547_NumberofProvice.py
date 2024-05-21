@@ -29,6 +29,7 @@ class Solution:
         n = len(isConnected)
         if n == 1: return 1
         # stardard method, convert any type to a {node: [list of neighbors]} format, and then traverse each neighbor
+        # the difference for this problem is, you need to find the neighbor relation from the matrix isConnected.
         abj = [[] for _ in range(n)]
         for i in range(n):
             for j in range(i+1, n): # symmetric matrix, only need to compare the right top corner
@@ -40,7 +41,7 @@ class Solution:
         visited = set()
         q = deque()
         for i in range(n):
-            if i not in visited:
+            if i not in visited:  # means this i is not connected to the previous connected nodes, therefore, res+1
                 q.append(i)
                 visited.add(i)
                 res += 1
