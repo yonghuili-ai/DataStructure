@@ -60,122 +60,82 @@ class MedianFinder:
             median = self.arr[(self.size-1)//2] + self.arr[(self.size+1)//2]
             return median/2
         
-"""
-Approach 3: Two Heaps
-Intuition
 
-The above two approaches gave us some valuable insights on how to tackle this problem. Concretely, one can infer two things:
+# Approach 2: Two Heaps
 
-If we could maintain direct access to median elements at all times, then finding the median would take a constant amount of time.
-If we could find a reasonably fast way of adding numbers to our containers, additional penalties incurred could be lessened.
-But perhaps the most important insight, which is not readily observable, is the fact that we only need a consistent way to access the median elements. Keeping the entire input sorted is not a requirement.
-
-Well, if only there were a data structure which could handle our needs.
-
-As it turns out there are two data structures for the job:
-
-Heaps (or Priority Queues 1)
-Self-balancing Binary Search Trees (we'll talk more about them in Approach 4)
-Heaps are a natural ingredient for this dish! Adding elements to them take logarithmic order of time. They also give direct access to the maximal/minimal elements in a group.
-
-If we could maintain two heaps in the following way:
-
-A max-heap to store the smaller half of the input numbers
-A min-heap to store the larger half of the input numbers
-This gives access to median values in the input: they comprise the top of the heaps!
-
-Wait, what? How?
-
-If the following conditions are met:
-
-Both the heaps are balanced (or nearly balanced)
-The max-heap contains all the smaller numbers while the min-heap contains all the larger numbers
-then we can say that:
-
-All the numbers in the max-heap are smaller or equal to the top element of the max-heap (let's call it xxx)
-All the numbers in the min-heap are larger or equal to the top element of the min-heap (let's call it yyy)
-Then xxx and/or yyy are smaller than (or equal to) almost half of the elements and larger than (or equal to) the other half. That is the definition of median elements.
-
-This leads us to a huge point of pain in this approach: balancing the two heaps!
-
-Algorithm
-
-Two priority queues:
-
-A max-heap lo to store the smaller half of the numbers
-A min-heap hi to store the larger half of the numbers
-The max-heap lo is allowed to store, at worst, one more element more than the min-heap hi. Hence if we have processed kkk elements:
-
-If k=2∗n+1, then lo is allowed to hold n+1 elements, while hi can hold n elements.
-If k=2∗n, then both heaps are balanced and hold n elements each.
-This gives us the nice property that when the heaps are perfectly balanced, the median can be derived from the tops of both heaps. Otherwise, the top of the max-heap lo holds the legitimate median.
-
-Adding a number num:
-
-Add num to max-heap lo. Since lo received a new element, we must do a balancing step for hi. So remove the largest element from lo and offer it to hi.
-The min-heap hi might end holding more elements than the max-heap lo, after the previous operation. We fix that by removing the smallest element from hi and offering it to lo.
-The above step ensures that we do not disturb the nice little size property we just mentioned.
-
-A little example will clear this up! Say we take input from the stream [41, 35, 62, 5, 97, 108]. The run-though of the algorithm looks like this:
-
-Adding number 41
-MaxHeap lo: [41]           // MaxHeap stores the largest value at the top (index 0)
-MinHeap hi: []             // MinHeap stores the smallest value at the top (index 0)
-Median is 41
-=======================
-Adding number 35
-MaxHeap lo: [35]
-MinHeap hi: [41]
-Median is 38
-=======================
-Adding number 62
-MaxHeap lo: [41, 35]
-MinHeap hi: [62]
-Median is 41
-=======================
-Adding number 4
-MaxHeap lo: [35, 4]
-MinHeap hi: [41, 62]
-Median is 38
-=======================
-Adding number 97
-MaxHeap lo: [41, 35, 4]
-MinHeap hi: [62, 97]
-Median is 41
-=======================
-Adding number 108
-MaxHeap lo: [41, 35, 4]
-MinHeap hi: [62, 97, 108]
-Median is 51.5
-"""
-
-        ## RC ##
-        ## APPROACH : 2 HEAPS ##
-        ## LOGIC ##
-        ## One minheap to store low values and second maxheap to store max values, we keep track and update median every time after insertion ##
-        
-		## TIME COMPLEXITY : O(logN) ##
-		## SPACE COMPLEXITY : O(N) ##
+import heapq
 class MedianFinder:
-    def __init__(self):
-        self.lo = []  
-        self.hi = []  
 
-    def addNum(self, num):
-        heappush(self.lo, -num)             # lo is maxheap, so -1 * num
-        heappush(self.hi, -self.lo[0])      # hi is minheap
-        heappop(self.lo)
+    def __init__(self):
+        # needs two heaps, 
+        # one to store the larger half and find the min, => min_heap
+        # one to store the smaller half and find the max, => max_heap
+        self.small,self.large = [], [] # self.small = self.large = [] will create issue as explained following
+# a = b = []:
+
+# a and b reference the same list.
+# Changes to the list via a affect b, and vice versa.
+# a, b = [], []:
+
+# a and b reference different lists.
+# Changes to the list via a do not affect b, and vice versa.
         
-        if len(self.lo) < len(self.hi):
-            heappush(self.lo, -self.hi[0])
-            heappop(self.hi)
-            
-    def findMedian(self):
-        if len(self.lo) > len(self.hi):
-            return -self.lo[0]                  
+
+
+# https://leetcode.com/problems/find-median-from-data-stream/solutions/969081/python-two-heap-solution-with-full-explanation/
+    # We have a max heap representing the sorted left half of the stream, and a min heap representing the sorted right half of the stream.
+    # The tops of these heaps represent the middle of the stream so far.
+    
+    # To get the median:
+    #     - if len(left) == len(right): return (left[0] + right[0]) / 2
+    #     - elif len(left) > len(right): return left[0]
+    #     - else: return right[0]
+        
+    # To add a number x:
+    #     If x <= left[0], add to left. Else, add to right.
+    #     If abs(len(left) - len(right)) > 1: rebalance heaps.
+        
+    # To rebalance:
+    #     Pop an element from the bigger heap and add it to the smaller heap.
+        
+    # Adding a number: O(log n) time, as there could be at most 2 pushes and 1 pop (log n).
+    # Finding the median: O(1), since we just look at the 0th elements of the heaps.
+    # Space: O(n), since we store every element in the heaps.
+
+    def addNum(self, num: int) -> None:
+        if not self.small or num > -self.small[0]:
+            heapq.heappush(self.large, num)
         else:
-            return (self.hi[0] - self.lo[0]) / 2  # - as low has -ve values
+            heapq.heappush(self.small, -num)
+        # rebalance
+        if abs(len(self.large) - len(self.small)) > 1:
+            if len(self.large) > len(self.small):
+                smt = heapq.heappop(self.large)
+                heapq.heappush(self.small, -smt)
+            else:
+                lgt = -heapq.heappop(self.small)
+                heapq.heappush(self.large, lgt)
+    
+
+
+
+        
+
+    def findMedian(self) -> float:
+        if len(self.large) == len(self.small):
+            return (self.large[0]-self.small[0])/2
+        elif len(self.large) > len(self.small):
+            return self.large[0]
+        else:
+            return -self.small[0]
+        
+
+
 # Your MedianFinder object will be instantiated and called as such:
 # obj = MedianFinder()
 # obj.addNum(num)
 # param_2 = obj.findMedian()
+
+
+
+
