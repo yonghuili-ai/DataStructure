@@ -23,19 +23,25 @@ Constraints:
 nums[i] is either 0 or 1.
 0 <= k <= nums.length
 """
-
-
+# https://leetcode.com/problems/max-consecutive-ones-iii/
+from collections import defaultdict
 class Solution:
     def longestOnes(self, nums: list[int], k: int) -> int:
-        # follow this https://leetcode.com/problems/max-consecutive-ones-iii/solutions/719833/python3-sliding-window-with-clear-example-explains-why-the-soln-works/?envType=study-plan-v2&envId=leetcode-75
+        """typical problem that can be solved using sliding window and hashmap
+        only move right or left pointer at a time, use hashmap to save count of 0 and 1
+        if moving right cause count of 0 in hashmap larger than k, means we need to move left pointer towards right
+        when moving left pointer, we need to update the hashmap count, and check if count of 0 equals to k
+        then record the current window to max_v"""
+        l, r, max_v = 0, 0, 0
+        h = defaultdict(int)
+        for r, v in enumerate(nums):
+            h[v] += 1
+            while h[0] > k:
+                # move left pointer, and update the count brought by left change in hashmap
+                h[nums[l]] -= 1
+                l += 1
 
-        left = right = 0
-        for right in range(len(nums)):
-            if nums[right] == 0:
-                k -= 1
-            
-            if k < 0:
-                if nums[left] == 0:
-                    k += 1
-                left += 1
-        return right - left + 1
+            # if h[0] == k: max_v = max(max_v, r-l+1) # miss the case that [0,0,0,1] k = 4, should return 4, but this will return 0 
+            # check all possible solutions
+            max_v = max(max_v, r - l + 1)
+        return max_v
