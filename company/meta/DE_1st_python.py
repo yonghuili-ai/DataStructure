@@ -114,3 +114,60 @@ arr1 = [4, 5, 11, 5, 6, 11]
 arr2 = [4, 5, 11, 5, 5, 6, 11]
 print(balance_arr(arr1))
 print(balance_arr(arr2))
+
+
+# https://www.hackerrank.com/challenges/ctci-array-left-rotation/problem?isFullScreen=true&h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=arrays
+
+# list(prev[0]): This attempts to convert prev[0] into a list. If prev[0] is a single value (like an integer or a string), this operation will fail or produce unexpected results.
+
+# [prev[0]]: This creates a new list containing just the first element of prev.
+
+
+# When you write prev[1:].append(prev[0]), it first creates a new list with prev[1:], and then appends prev[0] to this new list. But because append() returns None, the result assigned to new is None.
+# right way is prev[1:]+ [prev[0]]
+
+def rotLeft(a, d):
+    # Write your code here
+    prev = a
+    while d > 0:
+        new = prev[1:] + [prev[0]]
+        d -= 1
+        prev = new
+    return new 
+a = [1,2,3,4,5]
+d = 4
+print(rotLeft(a, d))
+
+
+
+# Mock interview question
+
+
+'''
+Given an IP address as input, the task is to write a Python program to check whether the given IP Address is Valid or not without using RegEx.
+
+What is an IP (Internet Protocol) Address? 
+Every computer connected to the Internet is identified by a unique four-part string, known as its Internet Protocol (IP) address. An IP address (version 4) consists of four numbers (each between 0 and 255) separated by periods. The format of an IP address is a 32-bit numeric address written as four decimal numbers (called octets) separated by periods; each number can be written as 0 to 255 (E.g. – 0.0.0.0 to 255.255.255.255).
+
+Examples: 
+
+Input:  192.168.0.1
+Output: Valid IP address
+
+'''
+
+def valid_ip(s):
+    l = s.split('.')
+    print(l)
+    if len(l) != 4: return False 
+    for ele in l:
+        if int(ele) < 0 or int(ele) > 255:
+            return False 
+    return True 
+
+print(valid_ip('192.168.0.1'))
+print(valid_ip('192.-168.0.1'))
+
+# https://www.geeksforgeeks.org/validate-an-ip-address-using-python-without-using-regex/
+
+# 5min, read, ask 1-2 questions, start immediately, O(n) or O(1), linear search, dictionary
