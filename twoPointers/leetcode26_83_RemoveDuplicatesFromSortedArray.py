@@ -65,3 +65,60 @@ print(removeDuplicates(nums))
 
 nums2 = [0,0,1,1,1,2,2,3,3,4]
 print(removeDuplicates(nums2))
+
+
+
+
+"""
+leetcode 83 Remove duplicates from sorted list
+
+Given the head of a sorted linked list, delete all duplicates such that each element appears only once. Return the linked list sorted as well.
+
+ 
+
+Example 1:
+
+
+Input: head = [1,1,2]
+Output: [1,2]
+Example 2:
+
+
+Input: head = [1,1,2,3,3]
+Output: [1,2,3]
+ 
+
+Constraints:
+
+The number of nodes in the list is in the range [0, 300].
+-100 <= Node.val <= 100
+The list is guaranteed to be sorted in ascending order.
+
+"""
+
+
+# Definition for singly-linked list.
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+class Solution:
+    def deleteDuplicates(self, head:ListNode):
+        if not head: return None
+        f, s = head, head
+        while f:
+            if f.val == s.val:
+                f = f.next
+            # when f.val is not the same as s.val, means the duplicate is over. Need the slow to point the current f
+            else:
+                s.next = f 
+                # do not forget to update slow, otherwise, slow never changed 
+                s = s.next
+        s.next = None 
+        return head 
+    
+# nonDuplicate = Solution()
+# nonDuplicate.deleteDuplicates()
+            
+
+   
