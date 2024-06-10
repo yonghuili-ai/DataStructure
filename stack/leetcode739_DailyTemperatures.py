@@ -35,7 +35,7 @@ def dailyTemperatures(temperatures: list[int]):
 from typing import List
 
 # template solution
-def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+def dailyTemperatures(temperatures: List[int]) -> List[int]:
     n = len(temperatures)
     i = n - 1
     stack = []
@@ -50,3 +50,66 @@ def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
         stack.append((temperatures[i], i))
         i -= 1
     return res
+
+# what if this question is asking about how many days have to wait for a cooler day?
+# design a mono decreasing stack, where top is largest, and bottom is smallest
+# template solution
+def coolerTemperatures(temperatures: List[int]) -> List[int]:
+    n = len(temperatures)
+    i = n - 1
+    stack = []
+    res = [0 for _ in range(n)]
+    while i >= 0 :
+        while stack and stack[-1][0] >= temperatures[i]:
+            stack.pop()
+        if stack and stack[-1][0] < temperatures[i]:
+            res[i] = stack[-1][1] - i 
+        # elif not stack:
+        #     pass 
+        stack.append((temperatures[i], i))
+        i -= 1
+    return res
+
+temperatures = [73,74,75,71,69,72,76,73]
+# print(coolerTemperatures(temperatures))
+
+# what if this question is asking about how many days was before current day which is cooler?
+# use a mono decreasing stack, where top is largest, and bottom is smallest
+# also need to check from index 0 to n-1
+# template solution
+def previousCoolerTemp(temperatures):
+    n = len(temperatures)
+    i = 0
+    stack = []
+    res = [0 for _ in range(n)]
+    while i < n:
+        while stack and stack[-1][0] >= temperatures[i]: # previous is larger, needs to pop
+            stack.pop()
+        if stack and stack[-1][0] < temperatures[i]: # previous cooler exists
+            res[i] = i - stack[-1][1]
+        elif not stack:
+            pass
+        stack.append((temperatures[i], i))
+        i += 1
+    return res 
+
+# temperatures = [73,74,75,71,69,72,76,73]
+print(previousCoolerTemp(temperatures))
+
+
+# Summary! 
+# To find 
+# previous smaller ==> index 0 --> n-1, stack top largest
+# previous larger ==> index 0 --> n-1, stack top smallest
+# next smaller ==> index n-1 --> 0, stack top largest
+# next larger ==> index n-1 --> 0, stack top smallest
+
+
+# next ==> reverse 
+# smaller ==> stack top largest, mono increasing 
+
+# previous ==> ascending index 
+# larger ==> stack top smallest, mono decresing 
+
+
+# Therefore, stack is a reverse data structure, all solution should be reversed
