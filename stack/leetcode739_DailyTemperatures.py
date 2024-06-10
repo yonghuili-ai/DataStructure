@@ -16,7 +16,7 @@ Input: temperatures = [30,60,90]
 Output: [1,1,0]"""
 
 
-
+# initial method, can jump to the templated method attached below
 def dailyTemperatures(temperatures: list[int]):
     # since this question is asking about index, then push the index to the stack
     # compare the current tempareture with the stack top index corresponding tempareture, if current temperature is higher, then we find the day to get a warmer temperature. current index - stack top index is the day number. 
@@ -30,4 +30,23 @@ def dailyTemperatures(temperatures: list[int]):
             idx = stack.pop()  
             res[idx] = i - idx  
         stack.append(i) # means if the temperature is going down, then append these indexes until going up again
+    return res
+
+from typing import List
+
+# template solution
+def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+    n = len(temperatures)
+    i = n - 1
+    stack = []
+    res = [0 for _ in range(n)]
+    while i >= 0 :
+        while stack and stack[-1][0] <= temperatures[i]:
+            stack.pop()
+        if stack and stack[-1][0] > temperatures[i]:
+            res[i] = stack[-1][1] - i 
+        # elif not stack:
+        #     pass 
+        stack.append((temperatures[i], i))
+        i -= 1
     return res
