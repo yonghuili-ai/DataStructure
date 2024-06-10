@@ -1,3 +1,5 @@
+"""For these questions, remember we should use a mono-increase or mono-decrese in the stack， similar questions are 739, 496, 503"""
+
 """
 There are n buildings in a line. You are given an integer array heights of size n that represents the heights of the buildings in the line.
 
@@ -120,3 +122,49 @@ def findBuildings(heights):
                     right_max = heights[right]
         return left_res + right_res[::-1]    
 
+
+"""variant of the above question
+Given an array called nums, can you return a same length array which saves the next greater element for the corresponding element in each index of nums. If there is no next greater element, return -1.  
+
+Example:
+
+input nums = [2,1,2,4,3]
+output [4,2,4,-1,-1]
+
+input nums = [4,3,2,1]
+output [-1,-1,-1,-1]
+
+
+input nums = [7,7,8,8]
+output [8,8,-1,-1]
+"""
+
+def nextGreaterElement(nums):
+    n = len(nums)
+    i = n-1
+    stack = []
+    res = [-1 for _ in range(n)]
+    while i >= 0:
+        while stack and stack[-1][0] <= nums[i]:
+            # the top of stack is not greater than current element, needs to dig dipper in stack. Since stack is an strickly increasing from bottom to top 
+            stack.pop()
+
+        if stack and stack[-1][0] > nums[i]: 
+            # found the next greater element
+            res[i] = stack[-1][0]
+            # add the current element to stack, which might be the next greater element for future loops
+            stack.append((nums[i], i))
+        elif not stack:
+            stack.append((nums[i], i))
+        else:
+            pass
+        i -= 1
+    return res 
+
+nums1 = [2,1,2,4,3]
+nums2 = [4,3,2,1]
+nums3 = [7,7,8,8]
+
+print(nextGreaterElement(nums1))
+print(nextGreaterElement(nums2))
+print(nextGreaterElement(nums3))
