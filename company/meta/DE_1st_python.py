@@ -12,7 +12,7 @@ def fill_none(arr):
 arr1 = [1]
 arr2 = [None]
 arr3 = [1, None, 1, 2, None]
-arr4 = [1, None, None, None, 1]
+arr4 = [2, None, None, None, 1]
 
 print(fill_none(arr1))
 print(fill_none(arr2))

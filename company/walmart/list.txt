@@ -1,0 +1,240 @@
+https://leetcode.com/problems/search-in-rotated-sorted-array/description/
+https://leetcode.com/problems/search-in-rotated-sorted-array-ii/description/
+https://leetcode.com/problems/maximal-square/
+https://leetcode.com/problems/word-ladder/description/
+
+
+Given an array of characters where each character represents a fruit tree, you are given two baskets, and your goal is to put maximum number of fruits in each basket. The only restriction is that each basket can have only one type of fruit.
+You can start with any tree, but you can’t skip a tree once you have started. You will pick one fruit from each tree until you cannot, i.e., you will stop when you have to pick from a third fruit type.
+Write a function to return the maximum number of fruits in both the baskets.
+Input: Fruit=['A', 'B', 'C', 'A', 'C']
+'C', 'A', 'C out of ['A', 'B', 'C', 'A', 'C'] in which there are only 2 distinct char
+Output: 3
+Explanation: We can put 2 'C' in one basket and one 'A' in the other from the subarray ['C', 'A', 'C']
+I‍‌‌‍‍‍‌‍‌‌‍‍‍‌‌‍‍‌‍nput: Fruit=['A', 'B', 'C', 'B', 'B', 'C']
+Output: 5
+Explanation: We can put 3 'B' in one basket and two 'C' in the other basket.
+This can be done if we start with the second letter: ['B', 'C', 'B', 'B', 'C']
+
+
+我是看了Data warehouse, SQL performance tuning这类的知识点，然后最好想想你做过的项目如何往de靠拢。不管什么项目都需要数据，如果是data engineer，就着重说如何ETL，如何manage这些data，有没有tune complex query, 如果是RDBMS如何保证integrity这类的
+
+
+spark相比hdfs优势在哪里？什么是lambda architecture？
+下一题，现在假设有一个现成的pipeline给你，可是throughput严重低于预期，问你会如何检查（从何着手，哪些因素需要考虑）？
+
+
+"""
+Part 1 :
+In the city of San Francisco, “initial” contains a list of people who are initially infected by COVID-19. In a network of people “contact”, each person “i” is directly connected to another person “j” if and only if contact[i][j] = 1. Assume all the people in San Francisco city are represented in this manner through the “contact” list. Whenever two people are directly connected and at least one of those two people is infected, both of them will get infected.This spread of COVID-19 will continue until no more people can be infected in this manner. 
+Find the final list of people infected by COVID-19 given “initial” infected list and “contact” matrix.
+
+Example 1:
+Input: contact = [[1,1,0],[1,1,0],[0,0,1]], initial = [0,1]
+Output: [0,1]
+
+    A --- B 
+      
+      C
+
+
+if contact (0- i, 1- j) == 1 and intial is [0, 2]:
+    
+1 1 0
+1 1 0
+0 0 1 
+
+Example 2:
+Input: contact = [[1,0,0],[0,1,0],[0,0,1]], initial = [0,2]
+Output: [0,2]
+
+1 0 0 
+0 1 0 
+0 0 1
+
+Example 3:
+Input: contact = [[1,1,1],[1,1,1],[1,1,1]], initial = [1,2]
+Output: [0,1,2]
+
+
+1 1 1 
+1 1 1
+1 1 1
+
+Example 4:
+Input: contact = [[1,0,0,0],[0,1,1,0],[0,1,1,1],[0,0,1,1]], initial = [3]
+Output: [1,2,3]
+
+
+1 0 0 0
+0 1 1 0
+0 1 1 1 
+0 0 1 1
+
+
+infected: {3, 2, 1}
+q: []
+curr: 1
+"""
+
+# def addNumbers(a,b):
+#     sum = a + b
+#     return sum
+
+# num1 = int(input())
+# num2 = int(input())
+
+# print("The sum is", addNumbers(num1, num2))
+
+from collections import deque
+def bfs(contact, initial):
+    infected = set(initial)
+    q = deque(initial)
+    
+    while q:
+        curr = q.popleft()
+        for i in range(len(contact)):
+            # connection
+            if contact[curr][i] == 1 and i not in infected:
+                # add to q
+                q.append(i)
+                # add to visited
+                infected.add(i)
+    return list(infected)
+# contact = [[1,0,0],[0,1,0],[0,0,1]]
+# initial = [0,2]   
+
+# contact = [[1,1,1],[1,1,1],[1,1,1]]
+# initial = [1,2]
+
+contact = [[1,0,0,0],[0,1,1,0],[0,1,1,1],[0,0,1,1]]
+initial = [3]
+print(bfs(contact, initial))
+
+
+
+"""
+Part 1 :
+In the city of San Francisco, “initial” contains a list of people who are initially infected by COVID-19. In a network of people “contact”, each person “i” is directly connected to another person “j” if and only if contact[i][j] = 1. Assume all the people in San Francisco city are represented in this manner through the “contact” list. Whenever two people are directly connected and at least one of those two people is infected, both of them will get infected.This spread of COVID-19 will continue until no more people can be infected in this manner. 
+Find the final list of people infected by COVID-19 given “initial” infected list and “contact” matrix.
+
+Example 1:
+Input: contact = [[1,1,0],[1,1,0],[0,0,1]], initial = [0,1]
+Output: [0,1]
+
+    A --- B 
+      
+      C
+
+
+if contact (0- i, 1- j) == 1 and intial is [0, 2]:
+    
+1 1 0
+1 1 0
+0 0 1 
+
+Example 2:
+Input: contact = [[1,0,0],[0,1,0],[0,0,1]], initial = [0,2]
+Output: [0,2]
+
+1 0 0 
+0 1 0 
+0 0 1
+
+Example 3:
+Input: contact = [[1,1,1],[1,1,1],[1,1,1]], initial = [1,2]
+Output: [0,1,2]
+
+
+1 1 1 
+1 1 1
+1 1 1
+
+Example 4:
+Input: contact = [[1,0,0,0],[0,1,1,0],[0,1,1,1],[0,0,1,1]], initial = [3]
+Output: [1,2,3]
+
+
+1 0 0 0
+0 1 1 0
+0 1 1 1 
+0 0 1 1
+
+
+infected: {3, 2, 1}
+q: []
+curr: 1
+
+
+
+Part 2:
+We will remove one person from the “initial” list. Suppose M(initial) is the final number of people infected in the entire network after the spread of corona stops. Return the person that if removed, would minimize M(initial).  If multiple people could be removed to minimize M(initial), return such a person with the smallest index.
+Note that if a person was removed from the initial list of infected nodes, they may still be infected later as a result of the infection spread.
+
+Example 1:
+Input: contact = [[1,1,0],[1,1,0],[0,0,1]], initial = [0,1]
+Output: 0
+Initial: [0]
+Infected: 0, 1
+
+
+
+1 1 0
+1 1 0
+0 0 1
+
+Example 2:
+Input: contact = [[1,0,0],[0,1,0],[0,0,1]], initial = [0,2]
+Output: 0
+1 0 0
+0 1 0
+0 0 1
+
+Initial: [2]
+Infected: {2}
+
+
+contact = [[1,0,0,0],[0,1,1,0],[0,1,1,1],[0,0,1,1]]
+initial = [3]
+
+0 -- 2 
+  1 
+
+"""
+
+# def addNumbers(a,b):
+#     sum = a + b
+#     return sum
+
+# num1 = int(input())
+# num2 = int(input())
+
+# print("The sum is", addNumbers(num1, num2))
+
+from collections import deque
+def bfs(contact, initial):
+    infected = set(initial)
+    q = deque(initial)
+    
+    while q:
+        curr = q.popleft()
+        for i in range(len(contact)):
+            # connection
+            if contact[curr][i] == 1 and i not in infected:
+                # add to q
+                q.append(i)
+                # add to visited
+                infected.add(i)
+    return list(infected)
+    
+# time: O(n + V)
+# space: O(n)
+# contact = [[1,0,0],[0,1,0],[0,0,1]]
+# initial = [0,2]   
+
+# contact = [[1,1,1],[1,1,1],[1,1,1]]
+# initial = [1,2]
+
+contact = [[1,0,0,0],[0,1,1,0],[0,1,1,1],[0,0,1,1]]
+initial = [3]
+print(bfs(contact, initial))

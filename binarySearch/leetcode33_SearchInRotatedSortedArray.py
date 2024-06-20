@@ -32,7 +32,7 @@ nums is an ascending array that is possibly rotated.
 -10**4 <= target <= 10**4
 
 """
-
+from typing import List
 # alway find from the sorted half!
 class Solution:
     def search(self, nums: List[int], target: int) -> int:
@@ -51,7 +51,7 @@ class Solution:
             # print(l, r, mid)
             if nums[mid] == target: return mid
             # if left half sorted
-            if nums[l] <= nums[mid]:
+            if nums[l] <= nums[mid]: # the reason to add "=" is for signal 
                 # check if target in left half 
                 if target == nums[l]: 
                     return l
@@ -77,3 +77,41 @@ class Solution:
 
 # time O(logn)
 # space O(1)
+
+# more concised solution by Yonghui
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        if not nums:
+            return -1
+
+        l, r = 0, len(nums)-1
+        while l <= r:
+            mid = l + (r-l)//2
+            if nums[mid] == target: return mid
+            # left is in order
+            if nums[l] <= nums[mid]: # when there is only 1 element, where l = r = mid
+                # and target is in left
+                if nums[l] <= target <= nums[mid]:
+                    if nums[l] == target:
+                        return l
+                    elif nums[mid] == target:
+                        return mid
+                    else:
+                        r = mid - 1
+                # and target is in right
+                else:
+                    l = mid + 1
+            # right is in order
+            elif nums[mid] <= nums[r]:
+                # and target is in right
+                if nums[mid] <= target <= nums[r]:
+                    if nums[mid] == target:
+                        return mid
+                    elif nums[r] == target:
+                        return r
+                    else:
+                        l = mid + 1
+                # and target is in left
+                else:
+                    r = mid - 1
+        return -1

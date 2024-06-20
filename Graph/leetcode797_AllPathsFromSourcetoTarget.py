@@ -21,10 +21,11 @@ All the elements of graph[i] are unique.
 The input graph is guaranteed to be a DAG.
 """
 
-
+# dfs
 class Solution:
-    def allPathsSourceTarget(self, graph: List[List[int]]) -> List[List[int]]:
+    def allPathsSourceTarget(self, graph: list[list[int]]) -> list[list[int]]:
         # to find all possible paths, use backtracking to explore all nodes
+        # list(A-list) is a shallow copy of the list of A
         res = []
         def dfs(node, path):
             if node == len(graph) - 1: 
@@ -37,3 +38,25 @@ class Solution:
                     path.remove(next)
         dfs(0, [0])
         return res
+    
+# bfs
+from collections import deque
+class Solution:
+    def allPathsSourceTarget(self, graph: list[list[int]]) -> list[list[int]]:
+        # the trick is to have a tuple in queue, where the first element is source, and second one is the current path
+        source = 0
+        target = len(graph) - 1
+        q = deque()
+        q.append((source, [0]))
+        res = []
+        while q:
+            cur_node, cur_path = q.popleft()
+            if cur_node == target:
+                # foundn one path
+                res.append(cur_path)
+            for nei in graph[cur_node]:
+                q.append((nei, cur_path +[nei])) # using cur_path.append(nei) will change the cur_path, and +[nei] will only create a new list
+        return res
+    
+# time complexity
+    
