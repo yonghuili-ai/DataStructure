@@ -71,3 +71,58 @@ class Solution:
 
         return nums
         
+# solution that works best for interview
+
+# if no order of non-zero elements is required. and return the count of non-zero elements.
+def swap(nums): # two ends pointers
+    # edge
+    if len(nums) == 1 and nums[0] != 0: return 1
+    if len(nums) == 1 and nums[0] == 0: return 0
+    if not nums: return 0
+
+    l, r = 0, len(nums)-1 # 0, 6
+    res = 0
+    while l < r:
+        if nums[l] != 0 and nums[r] == 0:
+            # pass wrong condition, infinite loop
+            l += 1
+            r -= 1
+        elif nums[l] == 0 and nums[r] != 0:
+            # swap
+            nums[l], nums[r] = nums[r], nums[l]
+            l += 1
+            r -= 1
+        elif nums[l] == 0 and nums[r] == 0:
+            r -= 1
+        elif nums[l] != 0 and nums[r] != 0:
+            l += 1
+    # return l wrong terminate solution
+    for i in range(len(nums)):
+         if nums[i] != 0:
+              res += 1
+    return res 
+
+
+# if order of non-zero elements is required. and return the count of non-zero elements.
+# two pointers from the same end
+# fast or current pointer to iterate over the array
+# slow or first_zero pointer track the first zero position which will be used for swap
+
+def swap(nums):
+    # first_zero = 0
+    slow = 0
+    # for curr in range(len(nums)):
+    # if nums[curr] != 0:
+    #     nums[curr], nums[first_zero] = nums[first_zero], nums[curr]
+    #     first_zero += 1
+    for fast in range(len(nums)): # as long as the current is nonzero, we can swap
+        if nums[fast] != 0:
+            nums[fast], nums[slow] = nums[slow], nums[fast]
+            slow += 1
+        
+        # elif nums[curr] != 0:
+        #     first_zero = curr
+        # elif nums[first_zero] == 0:
+        #     first_zero += 1
+    print(nums)
+    return  slow #first_zero
