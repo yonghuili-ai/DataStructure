@@ -1,0 +1,28 @@
+
+To design test cases for the function you provided, for example, a function aims to move all zeros in the nums list to the end while keeping non-zero elements in their relative order, we should consider various scenarios to ensure the function behaves correctly under different conditions.
+
+Test Case Considerations:
+
+-- Basic Cases:
+
+Test with a simple array containing both zeros and non-zeros.
+Test with an array that already has all zeros at the end.
+
+
+-- Edge Cases:
+
+Test with an empty array.
+Test with an array that contains only zeros.
+Test with an array that contains only non-zeros.
+Test with an array where the last element is a zero.
+
+
+-- Boundary Cases:
+
+Test with arrays of different lengths, including small and large arrays.
+
+
+
+-- Performance Cases:
+
+Test with arrays that are very large to check for performance issues.
