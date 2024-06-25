@@ -83,7 +83,7 @@ class Solution:
         for i, l in enumerate(lists):
             if l: # this is critical, one linkedlist could be None
             # this should work in Python 2, but return with error in Python 3 as: TypeError: '<' not supported between instances of 'ListNode' and 'ListNode'
-            # one way to fix it is to introduct an ordering mechanism for heapq.
+            # one way to fix it is to introduce an ordering mechanism for heapq.
             # The problem while adding ListNode objects as tasks is that the Tuple comparison breaks for (priority, task) pairs if the priorities are equal and the tasks do not have a default comparison order. The solution is to store entries as 3-element list including the priority, an entry count, and the task.
                 heapq.heappush(h, (l.val, i, l))
         head = ListNode(-1)
@@ -101,6 +101,6 @@ class Solution:
                 heapq.heappush(h, (nextNode.next.val, i, nextNode.next))
                 i += 1
         return head.next
-# time O(logk) k is how many sorted linkedlist. each pop and push to priority queue takes o(logk), and the while loop go through N nodes
+# time O(Nlogk) k is how many sorted linkedlist. each pop and push to priority queue takes o(logk), and the while loop go through N nodes
 
 # space O(n) created a new linkedlist, O(k) for creating the priority queue      
