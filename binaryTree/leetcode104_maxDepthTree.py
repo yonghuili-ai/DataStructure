@@ -28,7 +28,7 @@ class TreeNode:
         self.left = left
         self.right = right
 
-# time O(n), we visit each node exactly once, thus the time complexity is O(N), where NNN is the number of nodes.
+# time O(n), we visit each node exactly once, thus the time complexity is O(N), where N is the number of nodes.
 # space O(N)-O(logN), in worst case, the tree is completely unbalanced, e.g. each node has only left child node, the recurrsion call would occur N times. In the best case, when the tree is completely balanced, the height of the tree is O(logN). 
 
 def maxDepth(root: TreeNode) -> int:
@@ -66,3 +66,6 @@ print(maxDepth(root1))  # Output: 3
 tree_list2 = [1, None, 2]
 root2 = build_tree_from_list(tree_list2)
 print(maxDepth(root2))  # Output: 2
+
+
+
