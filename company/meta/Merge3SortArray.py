@@ -133,7 +133,7 @@ Output: []
 Constraints:
 
 k == lists.length
-0 <= k <= 104
+0 <= k <= 10**4
 0 <= lists[i].length <= 500
 -104 <= lists[i][j] <= 10**4
 lists[i] is sorted in ascending order.
@@ -142,4 +142,35 @@ The sum of lists[i].length will not exceed 10**4.
 
 
 
+# Definition for singly-linked list.
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
 
+import heapq
+class Solution:
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+
+        min_heap = []
+        for i in range(len(lists)):
+            if lists[i]:
+                heapq.heappush(min_heap, (lists[i].val, i, lists[i]))
+        
+        # create a dummy node to simplify the merging process
+        dummy = ListNode()
+        current = dummy
+
+        while min_heap:
+            smallest_node = heapq.heappop(min_heap)[2]
+            current.next = smallest_node
+            current = current.next 
+
+            # if there is a next node in the list, add it to the heap
+            if smallest_node.next:
+                i = i + 1
+                heapq.heappush(min_heap, (smallest_node.next.val, i,smallest_node.next))
+        return dummy.next
+
+# time O(Nlogk), where 𝑁 is the total number of nodes across all linked lists and 
+# 𝑘 is the number of linked lists. The space complexity is O(k) for the heap.
