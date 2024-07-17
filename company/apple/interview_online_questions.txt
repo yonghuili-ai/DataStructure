@@ -1,0 +1,80 @@
+/*
+You have logs ingested into your Warehouse that captures user interactions on the e-commerce website. Each log entry contains the following fields: timestamp, user_id, event_type, page, and session_id.
+
+timestamp            user_id   event_type    page             session_id
+-------------------  --------  ------------  ---------------  -----------
+2023-05-16 08:45:00  user_001  page_view     /home            session_001
+2023-05-16 08:46:10  user_001  click         /product/123     session_001
+2023-05-16 08:47:25  user_002  page_view     /home            session_002
+2023-05-16 08:48:30  user_003  page_view     /about           session_003
+2023-05-16 08:49:45  user_003  click         /contact         session_003
+2023-05-16 08:50:00  user_001  purchase      /checkout        session_001
+2023-05-16 08:51:20  user_002  page_view     /product/456     session_002
+2023-05-16 08:52:35  user_003  logout        /logout          session_003
+2023-05-16 08:53:00  user_001  page_view     /profile         session_004
+2023-05-16 08:54:15  user_002  sign_up       /sign-up         session_005
+
+
+*/
+
+raw ==> clean ==> aggregation (convert to date, index, partition)
+
+date month year user_id event_type page session 
+keep (date user_id event_type page session) ==> date total_user_daily 
+month user_id event_type page session  ==> month total_user_monthly
+
+
+-- Q. Write a SQL to compute calendar monthly website visitors from this table for the last 3 months
+-- date user_id event_type page session -agg_tb
+select month(date) as monthly, count(distinct user_id) as distinct_total_visitors
+from agg_tb 
+where date >= date('2024-04-16')
+group by monthly 
+order by 1 
+
+
+-- Q. Write an SQL query to find the top 5 most visited pages in the last month.
+
+select page, count(*) as distict_visited_page
+from agg_tb 
+where date > date('2024-06-16')
+group by page
+order by distict_visited_page desc 
+limit 5 
+
+-- Q. Write an SQL query to calculate the retention rate of users (e.g., the percentage of users who visited the site in consecutive months).
+
+retention rate = count(user retention) // total user
+
+with tmp as 
+(
+  select month(date) as monthly, user_id 
+  from agg_tb 
+), tmp1 AS
+(
+select user_id, monthly, lead(monthly, 1) over(partition by user_id order by monthly) as next_monthly from tmp 
+)
+select round(count(distinct user_id) * 1.00 / (select count(distinct user_id) from agg_tb), 2) as retention_rate
+from tmp1 
+where datediff(next_monthly, monthly, 'month') = 1 
+
+
+
+
+# Q. Write a Python script that reads a log file (in CSV format) and computes the Daily Active Users (DAU). The script should handle large files efficiently.
+import csv
+import datetime 
+from collections import defaultdict 
+def read_log(file_name):
+    with open(file_name, encoding = 'utf-8') as f:
+        reader = csv.DictReader(file_name)
+        DAU = defaultdict(set)
+        res = defaultdict(int)
+        for line in reader:
+            timestamp = line['timestamp']
+            user_id = line['user_id']
+            date = datetime.api(timestamp, '%Y-%m-%d') # convert to date
+            DAU[date].add(user_id)
+        for date, lst in DAU.items():
+            res[date] = len(lst)
+    return res 

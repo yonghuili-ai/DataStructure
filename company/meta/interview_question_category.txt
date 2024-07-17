@@ -1,5 +1,5 @@
 array:
-https://leetcode.com/problems/move-zeroes/description/
+https://leetcode.com/problems/move-zeroes/description/  -- done
 https://leetcode.com/problems/non-overlapping-intervals/description/
 https://leetcode.com/problems/merge-sorted-array/description/
 
@@ -7,12 +7,12 @@ presum
 https://leetcode.com/problems/subarray-sum-equals-k/description/
 
 BinarySearch
-https://leetcode.com/problems/find-peak-element/description/
+https://leetcode.com/problems/find-peak-element/description/ --done 
 
 
 heap 
-https://leetcode.com/problems/top-k-frequent-elements/description/
-https://leetcode.com/problems/sliding-window-median/description/
+LC347 https://leetcode.com/problems/top-k-frequent-elements/description/ -- done
+https://leetcode.com/problems/sliding-window-median/description/ -- hard, not understand
 
 stack 
 https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/description/

@@ -17,13 +17,15 @@ Output: [0]
 
 Constraints:
 
-1 <= nums.length <= 104
--231 <= nums[i] <= 231 - 1
+1 <= nums.length <= 10**4
+-2**31 <= nums[i] <= 2**31 - 1
  
 
 Follow up: Could you minimize the total number of operations done?
 """
 
+# best logic to use in interview
+from typing import List
 class Solution:
     def moveZeroes(self, nums: List[int]) -> None:
         """
@@ -32,7 +34,7 @@ class Solution:
         # in place change, and also maintain the relative order of rest
         # use two pointers
         if len(nums) == 1: return nums
-        l, r = 0, 1
+        l, r = 0, 1 # also works with l, r = 0, 0
         while r < len(nums):
             # simplified logic
             if nums[l] == 0:
@@ -46,17 +48,8 @@ class Solution:
                 l += 1
                 r = l+1
 
-            # if nums[l] == 0:
-            #     if nums[r] != 0:
-            #         nums[l], nums[r] = nums[r], nums[l]
-            #     else:
-            #         while r < len(nums) - 1 and nums[r] == 0:
-            #             r += 1
-            #         nums[l], nums[r] = nums[r], nums[l]
-            # l += 1
-            # r = l + 1
                 
-        # use for loop seems easiler
+# use for loop seems easiler
 class Solution:
     def moveZeroes(self, nums: list) -> None:
         slow = 0

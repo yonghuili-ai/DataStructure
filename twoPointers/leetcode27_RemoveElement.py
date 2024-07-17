@@ -5,25 +5,6 @@ Consider the number of elements in nums which are not equal to val be k, to get 
 
 Change the array nums such that the first k elements of nums contain the elements which are not equal to val. The remaining elements of nums are not important as well as the size of nums.
 Return k.
-Custom Judge:
-
-The judge will test your solution with the following code:
-
-int[] nums = [...]; // Input array
-int val = ...; // Value to remove
-int[] expectedNums = [...]; // The expected answer with correct length.
-                            // It is sorted with no values equaling val.
-
-int k = removeElement(nums, val); // Calls your implementation
-
-assert k == expectedNums.length;
-sort(nums, 0, k); // Sort the first k elements of nums
-for (int i = 0; i < actualLength; i++) {
-    assert nums[i] == expectedNums[i];
-}
-If all assertions pass, then your solution will be accepted.
-
- 
 
 Example 1:
 
@@ -47,31 +28,47 @@ Constraints:
 0 <= val <= 100
 
 """
+from typing import List
+class Solution:
+    def removeElement(self, nums: List[int], val: int) -> int:
+        #     # similar to leetcode 27, delete duplicated elements in sorted array in place
+        # s, f = 0, 0 
+        # while f < len(nums):
+        #     if nums[f] != val:
+        #         nums[s] = nums[f]
+        #         s += 1
+        #     f += 1
+        # return s
+        k = 0  # Pointer for the position of the next non-val element
+        for i in range(len(nums)):
+            if nums[i] != val:
+                nums[k] = nums[i]
+                k += 1
+        return k
+# Initialization: We initialize a pointer k to 0. This pointer will keep track of the position where the next non-val element should be placed.
 
-# initial try with slow, fast as 0, 1
-def removeElement(nums: list[int], val: int) -> int:
-    if len(nums) == 0: return 0
-    if len(nums) == 1 and nums[0] == val: return 0
-    if len(nums) == 1 and nums[0] != val: return 1
-    s, f = 0, 1
+# Iteration: We iterate through the array using a loop. For each element:
+
+# If the current element (nums[i]) is not equal to val, we place it at the position k and increment k.
+# Return Result: After the loop completes, k will represent the number of elements in nums which are not equal to val. The elements from nums[0] to nums[k-1] are the required elements.
+
+def twopointers_inplace_template(nums, val):
+    if not nums: return []
+    s, f = 0, 0
     while f < len(nums):
-        # all the conditions list below is for one purpose: move the val to the end of nums!
-        # condition 1, when slow has the val and fast is not, we swap slow and fast, move ahead both
-        if nums[s] == val and nums[f] != val:
-            nums[s], nums[f] = nums[f], nums[s]
+        if nums[s] == val:
+            if nums[f] == val:
+                f += 1
+            elif nums[f] != val:
+                nums[s], nums[f] = nums[f], nums[s]
+                s += 1
+                f += 1 
+        elif nums[s] != val:
             s += 1
-            f += 1
-        # condition 2, when slow is not and fast has the value, we 
-        elif nums[s] != val and nums[f] == val:
-            s = f
-            f += 1
-        else:
-            f += 1
-    res = 0
-    for i in nums:
-        if i != val:
-            res += 1
-        else:
-            break
-    return res
-    
+            # f = s + 1 wrong at [3,3] val = 5
+            f = s
+    print(nums)
+    return nums
+
+twopointers_inplace_template([3,2,2,3], 3)
+
